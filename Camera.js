@@ -1,27 +1,32 @@
-function Camera(location, actors, width, height)
+function Camera(location, width, height, actors)
 {
-	this.location = location;
-	this.height = height;
-	this.width = width;
+	Actor.call(this, new Image(), location);
+	this.height = this.image.height = height;
+	this.width = this.image.width = width;
 	this.actors = actors;
-	update();
+	/*
+	 * There was an update function here. Problem is if I subclassed Camera like so:
+	 * child.prototype = new Camera(...)
+	 * then the update function would create an unused visibleActors Array.
+	 */
 }
+
 Camera.prototype = new Actor();
 Camera.prototype.constructor = Camera;
 Camera.prototype.update = function() {
 	if(!(this.actors instanceof Array)) throw new TypeError('Instance of Array was expected.');
-	this.framedActors = new Array();
-	for(actor in this.actors) {
-		if(!(actor instanceof Actor)) throw new TypeError('Instance of Actor was expected.');
-		if(this.collidedWith(actor)) {
-			visibleActors.push(actor);
+	this.visibleActors = new Array();
+	for(var i = 0; i < this.actors.length; i++) {
+		if(!(this.actors[i] instanceof Actor)) throw new TypeError('Instance of Actor was expected.');
+		if(this.collidedWith(this.actors[i])) {
+			this.visibleActors.push(this.actors[i]);
 		}
 	}
 };
 Camera.prototype.draw = function(context) {
-	for(actor in this.framedActors) {
-		if(actor.draw) {
-			actor.draw(context, 0, 0);
+	for(var i = 0; i < this.visibleActors.length; i++) {
+		if(this.visibleActors[i].draw) {
+			this.visibleActors[i].draw(context, 0, 0);
 		}
 	}
 };

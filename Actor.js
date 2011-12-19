@@ -9,6 +9,7 @@ function Actor(/**Image || String*/ img, /**Location*/ loc)
         The image that will be displayed by this object
         @type Image
     */
+	that = this;
 	this.image = img;
 	if(typeof(img) == "string") {
 		this.image = new Image();
@@ -16,6 +17,10 @@ function Actor(/**Image || String*/ img, /**Location*/ loc)
 	}
 	
 	this.location = loc;
+//	if(this.image instanceof Image) {
+//		this.height = function(){return that.image.height;}();
+//		this.width = function(){return that.image.width;}();
+//	}
 }
 
 /**

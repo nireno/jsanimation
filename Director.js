@@ -33,6 +33,7 @@ function Director()
     /** A reference to the in-memory canvas used as a back buffer 
         @type HTMLCanvasElement
     */
+    this.camera = new Camera(new Location(0,0,0), this.canvas.width, this.canvas.height, this.actors);
     this.gameLoopInterval = null;
 
     // Create the backBuffer
@@ -67,6 +68,7 @@ function Director()
                 that.actors[x].update(dt, that.backBufferContext2D, that.xScroll, that.yScroll);
             }
         }
+        that.camera.update();
         that.lastUpdateTime = new Date().getTime();
 
         // clear the drawing contexts
@@ -74,13 +76,14 @@ function Director()
         that.context2D.clearRect(0, 0, that.canvas.width, that.canvas.height);
         
         // then draw the game objects
-        for (x in that.actors)
-        {
-            if (that.actors[x].draw)
-            {
-                that.actors[x].draw(that.backBufferContext2D, that.xScroll, that.yScroll);
-            }
-        }
+        that.camera.draw(that.backBufferContext2D);
+//        for (x in that.actors)
+//        {
+//            if (that.actors[x].draw)
+//            {
+//                that.actors[x].draw(that.backBufferContext2D, that.xScroll, that.yScroll);
+//            }
+//        }
 
         // copy the back buffer to the displayed canvas
         that.context2D.drawImage(that.backBuffer, 0, 0);
