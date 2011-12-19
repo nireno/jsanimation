@@ -1,9 +1,7 @@
-function Camera(location, width, height, actors)
+function Camera(box, actors)
 {
-	Actor.call(this, new Image(), location);
-	this.height = this.image.height = height;
-	this.width = this.image.width = width;
 	this.actors = actors;
+	this.box = box;
 	/*
 	 * There was an update function here. Problem is if I subclassed Camera like so:
 	 * child.prototype = new Camera(...)
@@ -11,14 +9,12 @@ function Camera(location, width, height, actors)
 	 */
 }
 
-Camera.prototype = new Actor();
-Camera.prototype.constructor = Camera;
 Camera.prototype.update = function() {
 	if(!(this.actors instanceof Array)) throw new TypeError('Instance of Array was expected.');
 	this.visibleActors = new Array();
 	for(var i = 0; i < this.actors.length; i++) {
 		if(!(this.actors[i] instanceof Actor)) throw new TypeError('Instance of Actor was expected.');
-		if(this.collidedWith(this.actors[i])) {
+		if(this.box.collidedWith(this.actors[i].box)) {
 			this.visibleActors.push(this.actors[i]);
 		}
 	}

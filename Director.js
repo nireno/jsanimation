@@ -33,7 +33,7 @@ function Director()
     /** A reference to the in-memory canvas used as a back buffer 
         @type HTMLCanvasElement
     */
-    this.camera = new Camera(new Location(0,0,0), this.canvas.width, this.canvas.height, this.actors);
+    this.camera = new Camera(new Box(0, 0, 0, this.canvas.width, this.canvas.height), this.actors);
     this.gameLoopInterval = null;
 
     // Create the backBuffer
@@ -98,7 +98,7 @@ function Director()
     	if(actor instanceof Actor)
 		{
 	        that.actors.push(actor);
-	        that.actors.sort(function(a,b){return a.location.z - b.location.z;});
+	        that.actors.sort(function(a,b){return a.box.z - b.box.z;});
 		}
     	else throw new TypeError('Instance of Actor was expected');
     };
