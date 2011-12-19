@@ -78,7 +78,7 @@ function Director()
         {
             if (that.actors[x].draw)
             {
-                that.actors[x].draw(dt, that.backBufferContext2D, that.xScroll, that.yScroll);
+                that.actors[x].draw(that.backBufferContext2D, that.xScroll, that.yScroll);
             }
         }
 
@@ -95,9 +95,9 @@ function Director()
     	if(actor instanceof Actor)
 		{
 	        that.actors.push(actor);
-	        that.actors.sort(function(a,b){return a.zOrder - b.zOrder;});
+	        that.actors.sort(function(a,b){return a.location.z - b.location.z;});
 		}
-    	else throw new IllegalArgumentException('Instance of Actor was expected');
+    	else throw new TypeError('Instance of Actor was expected');
     };
 
     /**
@@ -108,6 +108,6 @@ function Director()
     {
     	if(actor instanceof Actor)
 	        that.actors.removeObject(actor);
-    	else throw new IllegalArgumentException('Instance of Actor was expected');
+    	else throw new TypeError('Instance of Actor was expected');
     };
 }

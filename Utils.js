@@ -24,4 +24,4 @@ Array.prototype.removeObject = function(object)
             break;
         }
     }
-}
+};

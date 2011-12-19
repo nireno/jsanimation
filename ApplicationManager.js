@@ -8,11 +8,9 @@ function ApplicationManager(director)
 	var that = this;
 	if(director instanceof Director)
 		this.director = director;
-	else throw new IllegalArgumentException('Instance of Director was expected');
+	else throw new TypeError('Instance of Director was expected');
 	
-	var image = new Image();
-	image.src = "jsplatformer3-smiley.jpg";
-	this.bounce = new Bounce(image); 
+	this.bounce = new Bounce("jsplatformer3-smiley.jpg"); 
 	
 	this.playBall = function() {
 		that.director.addActor(that.bounce);
