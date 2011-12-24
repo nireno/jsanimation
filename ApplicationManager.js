@@ -11,9 +11,11 @@ function ApplicationManager(director)
 	else throw new TypeError('Instance of Director was expected');
 	
 	this.bounce = new Bounce("jsplatformer3-smiley.jpg"); 
+	this.grid = new Ribbon("images/black.png", new Box(0,0,0));
 	
 	this.playBall = function() {
 		that.director.addActor(that.bounce);
+		that.director.addActor(that.grid);
 		that.director.startRendering();
 	};
 }

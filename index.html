@@ -4,6 +4,7 @@
 	<style type="text/css">
 		body { font-family: Arial,Helvetica,sans-serif;}
 	</style>
+	<!--[if IE]><script type="text/javascript" src="excanvas.js"></script><![endif]-->
 </head>
 <body>
     <p>
@@ -11,7 +12,7 @@
 			Game Development with Javascript and the canvas element
 		</a>
 	</p>
-    <canvas id="canvas" width="600" height="400">
+    <canvas id="canvas" width="600" height="400" style="border-style:solid; border-width:1; border-color:red;">
         <p>
             Your browser does not support the canvas element.
         </p>
@@ -23,6 +24,7 @@
     </script>
 	<script type="text/javascript" src="Box.js"></script>
 	<script type="text/javascript" src="Actor.js"></script>
+	<script type="text/javascript" src="Ribbon.js"></script>
 	<script type="text/javascript" src="Camera.js"></script>
 	<script type="text/javascript" src="Bounce.js"></script>
     <script type="text/javascript" src="Utils.js"></script>

@@ -6,7 +6,7 @@
 function Bounce(/**Image or String*/ image)
 {
 	//INHERIT PROPERTIES OF VISUALACTOR
-	Actor.call(this, image, new Box(0, 0, 0));
+	Actor.call(this, image, new Box(0, 0, 1));
 	/** The movement direction  in the x axis
         @type Number
 	 */

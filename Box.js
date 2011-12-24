@@ -19,6 +19,12 @@ function Box(x, y, z, width, height) {
     this.width = width;
 }
 
+Box.prototype.getRightEdge = function() {
+	return this.x + this.width;
+};
+Box.prototype.getBottomEdge = function() {
+	return this.y + this.height;
+};
 /**
  * 
  * @param box

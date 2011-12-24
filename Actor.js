@@ -3,23 +3,22 @@
     @author <a href="mailto:matthewcasperson@gmail.com">Matthew Casperson</a>
     @class
 */
-function Actor(/**Image || String*/ img, box)
+function Actor(box, img)
 {
-    /**
-        The image that will be displayed by this object
-        @type Image
-    */
 	that = this;
-	this.image = img;
-	if(typeof(img) == "string") {
-		this.image = new Image();
-		this.image.src = img;
+	if(box !== undefined) {
+		this.box = box;
 	}
-	
-	this.box = box;
-	if(this.image instanceof Image) {
-		this.box.width = this.image.width;
-		this.box.height = this.image.height;
+	if(img !== undefined) {
+		this.image = img;
+		if(typeof(img) == "string") {
+			this.image = new Image();
+			this.image.src = img;
+		}
+		
+		//Update the width and height of the actor if it was not user defined.
+		this.box.width = this.box.width || this.image.width;
+		this.box.height = this.box.height || this.image.height;
 	}
 //	if(this.image instanceof Image) {
 //		this.height = function(){return that.image.height;}();
@@ -34,11 +33,13 @@ function Actor(/**Image || String*/ img, box)
     @param {Number} xScroll
     @param {Number} yScroll
 */
-Actor.prototype.draw = function(context, xScroll, yScroll)
+Actor.prototype.draw = function(context, camera, xScroll, yScroll)
 {
-	try{
-        context.drawImage(this.image, this.box.x - xScroll, this.box.y - yScroll);
+	if(this.hasOwnProperty('image')) {
+		try {
+	        context.drawImage(this.image, this.box.x - camera.box.x - xScroll, this.box.y - camera.box.y - yScroll);
+		}
+		catch(err) { throw err;}
 	}
-	catch(err) { throw err;}
 };
 
