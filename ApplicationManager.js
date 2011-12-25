@@ -10,7 +10,9 @@ function ApplicationManager(director)
 		this.director = director;
 	else throw new TypeError('Instance of Director was expected');
 	
-	this.bounce = new Bounce("jsplatformer3-smiley.jpg"); 
+	var image = new Image();
+	image.src = "jsplatformer3-smiley.jpg";
+	this.bounce = new Bounce(image); 
 	this.grid = new Ribbon("images/black.png", new Box(0,0,0));
 	
 	this.playBall = function() {

@@ -1,37 +1,30 @@
-function Camera(box, actors)
+function Camera(sprites, x, y, z, width, height, speedX, speedY)
 {
-	this.box = box;
-	this.actors = actors;
-	/*
-	 * There was an update function here. Problem is if I subclassed Camera like so:
-	 * child.prototype = new Camera(...)
-	 * then the update function would create an unused visibleActors Array.
-	 */
+	box.call(this, x, y, z, width, height, speedX, speedY);
+	this.sprites = sprites;
 }
+
 Camera.prototype = new Box();
 Camera.prototype.constructor = Camera;
 
+/**
+ * Update the location of the camera and re-calculate which sprites are currently visible.
+ */
 Camera.prototype.update = function(dt) {
-	if(!(this.actors instanceof Array)) throw new TypeError('Instance of Array was expected.');
-	this.visibleActors = new Array();
-	for(var i = 0; i < this.actors.length; i++) {
-		var actor = this.actors[i];
-		if(!(actor instanceof Actor)) throw new TypeError('Instance of Actor was expected.');
-		if(this.box.collidedWith(actor.box) || (actor instanceof Ribbon)) {
-			this.visibleActors.push(this.actors[i]);
+	Box.prototype.update.call(this, dt);
+	if(!(this.sprites instanceof Array)) throw new TypeError('Instance of Array was expected.');
+	this.visibleSprites = new Array();
+	for(var i = 0; i < this.sprites.length; i++) {
+		var sprite = this.sprites[i];
+		if(!(sprite instanceof Box)) throw new TypeError('Instance of Box was expected.');
+		if(this.collidedWith(sprite)) {
+			this.visibleSprites.push(this.sprites[i]);
 		}
 	}
-	this.box.x -= 10*dt;
 };
+
 Camera.prototype.draw = function(context) {
-	for(var i = 0; i < this.visibleActors.length; i++) {
-		var actor = this.visibleActors[i];
-		if(actor.draw) {
-			actor.draw(context, this, 0, 0);
-//			var image = this.visibleActors[i].image;
-//			var box = this.visibleActors[i].box;
-//			context.drawImage(image, box.x - this.box.x, box.y - this.box.y);
-//			this.visibleActors[i].draw(context, 0, 0);
-		}
+	for(var i = 0; i < this.visibleSprites.length; i++) {
+		this.visibleSprites[i].draw(context, this, 0, 0);
 	}
 };

@@ -1,4 +1,4 @@
-function Box(x, y, z, width, height) {
+function Box(x, y, z, width, height, speedX, speedY) {
     /** Display depth order. A smaller zOrder means the element is rendered first, and therefore
         in the background.
         @type Number
@@ -17,6 +17,8 @@ function Box(x, y, z, width, height) {
     
     this.height = height;
     this.width = width;
+    this.speedX = speedX;
+    this.speedY = speedY;
 }
 
 Box.prototype.getRightEdge = function() {
@@ -46,3 +48,10 @@ Box.prototype.collidedWith = function(box) {
 	if(left1 > right2) return false;
 	return true;
 };
+
+Box.prototype.update = function(dt) {
+	this.box.x += dt * this.speedX;
+	this.box.y += dt * this.speedY;
+};
+
+Box.prototype.draw = function() {};

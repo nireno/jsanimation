@@ -9,19 +9,12 @@ function Director()
     /** An array of game objects 
         @type Array
     */
-    this.actors = new Array();
+    this.boxes = new Array();
     /** The time that the last frame was rendered  
         @type Date
     */
     this.lastUpdateTime = new Date().getTime();
-    /** The global scrolling value of the x axis  
-        @type Number
-    */
-    this.xScroll = 0;
-    /** The global scrolling value of the y axis  
-        @type Number
-    */
-    this.yScroll = 0;
+    
     /** A reference to the ApplicationManager instance  
         @type ApplicationManager
     */
@@ -33,9 +26,9 @@ function Director()
     /** A reference to the in-memory canvas used as a back buffer 
         @type HTMLCanvasElement
     */
-    this.camera = new Camera(new Box(0, 0, 0, this.canvas.width, this.canvas.height), this.actors);
-    this.gameLoopInterval = null;
-
+    this.camera = new Camera(this.boxes, 0, 0, 0, this.canvas.width, this.canvas.height, 10, 0);
+    this.addBox(this.camera);
+    
     // Create the backBuffer
     this.backBuffer = document.createElement('canvas');
     this.backBuffer.width = this.canvas.width;
@@ -48,9 +41,9 @@ function Director()
     };
     
     this.stopRendering = function() {
-    	if(that.gameLoopInterval !== null){
+    	if (that.hasOwnProperty('gameLoopInterval')) {
 	    	clearInterval(that.gameLoopInterval);
-	    	that.gameLoopInterval = null;
+	    	delete that.gameLoopInterval;
     	}
     };
     /**
@@ -60,15 +53,14 @@ function Director()
     {
         // calculate the time since the last frame
         var dt = (new Date().getTime() - that.lastUpdateTime)/1000;
-        // first update all the game actors
-        for (x in that.actors)
+        // first update all the game boxes
+        for (x in that.boxes)
         {
-            if (that.actors[x].update)
+            if (that.boxes[x].update)
             {
-                that.actors[x].update(dt, that.backBufferContext2D, that.xScroll, that.yScroll);
+                that.boxes[x].update(dt);
             }
         }
-        that.camera.update();
         that.lastUpdateTime = new Date().getTime();
 
         // clear the drawing contexts
@@ -77,40 +69,33 @@ function Director()
         
         // then draw the game objects
         that.camera.draw(that.backBufferContext2D);
-//        for (x in that.actors)
-//        {
-//            if (that.actors[x].draw)
-//            {
-//                that.actors[x].draw(that.backBufferContext2D, that.xScroll, that.yScroll);
-//            }
-//        }
 
         // copy the back buffer to the displayed canvas
         that.context2D.drawImage(that.backBuffer, 0, 0);
     };
 
     /**
-        Adds a new actor to the actors collection
-        @param actor The object to add
+        Adds a new box to the boxes collection
+        @param box The object to add
     */
-    this.addActor = function(actor)
+    this.addBox = function(box)
     {
-    	if(actor instanceof Actor)
+    	if(box instanceof Box)
 		{
-	        that.actors.push(actor);
-	        that.actors.sort(function(a,b){return a.box.z - b.box.z;});
+	        that.boxes.push(box);
+	        that.boxes.sort(function(a,b){return a.box.z - b.box.z;});
 		}
-    	else throw new TypeError('Instance of Actor was expected');
+    	else throw new TypeError('Instance of Box was expected');
     };
 
     /**
-        Removes an actor from the actors collection
-        @param actor The object to remove
+        Removes an box from the boxes collection
+        @param box The object to remove
     */
-    this.removeActor = function(actor)
+    this.removeBox = function(box)
     {
-    	if(actor instanceof Actor)
-	        that.actors.removeObject(actor);
-    	else throw new TypeError('Instance of Actor was expected');
+    	if(box instanceof Box)
+	        that.boxes.removeObject(box);
+    	else throw new TypeError('Instance of Box was expected');
     };
 }
