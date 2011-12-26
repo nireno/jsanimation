@@ -50,8 +50,8 @@ Box.prototype.collidedWith = function(box) {
 };
 
 Box.prototype.update = function(dt) {
-	this.box.x += dt * this.speedX;
-	this.box.y += dt * this.speedY;
+	this.x += dt * this.speedX;
+	this.y += dt * this.speedY;
 };
 
 Box.prototype.draw = function() {};

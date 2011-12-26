@@ -11,14 +11,13 @@ function Sprite(box, image) {
 	this.box = box;
 	this.image = image;
 }
-Sprite.prototype = new Box();
-Sprite.prototype.constructor = Sprite;
 
 Sprite.prototype.update = function(dt) {
+	
 	this.box.update(dt);
 };
 
 Sprite.prototype.draw = function(context, camera) {
 	this.box.draw(context, camera);
-    context.drawImage(this.image, this.box.x - camera.box.x - xScroll, this.box.y - camera.box.y - yScroll);
+    context.drawImage(this.image, this.box.x - camera.box.x, this.box.y - camera.box.y);
 };

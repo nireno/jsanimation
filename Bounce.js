@@ -1,6 +1,6 @@
 function Bounce(image)
 {
-	Sprite.call(this, new Box(0, 0, 1, image.width, image.height, 20, 20), image);
+	Sprite.call(this, new Box(0, 0, 1, image.width, image.height, 100, 100), image);
 }
 
 Bounce.prototype = new Sprite();
@@ -14,22 +14,22 @@ Bounce.prototype.update = function (dt)
 	if (this.box.x >= 450)
 	{
 		this.box.x = 450;
-		this.speedX *= -1;
+		this.box.speedX *= -1;
 	}
 	else if (this.box.x <= 0)
 	{
 		this.box.x = 0;
-		this.speedX *= 1;
+		this.box.speedX *= -1;
 	}
 
 	if (this.box.y >= 250)
 	{
 		this.box.y = 250;
-		this.speedY *= -1;
+		this.box.speedY *= -1;
 	}
 	else if (this.box.y <= 0)
 	{
 		this.box.y = 0;
-		this.speedY *= -1;
+		this.box.speedY *= -1;
 	}
 };

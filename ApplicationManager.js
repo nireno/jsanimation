@@ -13,11 +13,13 @@ function ApplicationManager(director)
 	var image = new Image();
 	image.src = "jsplatformer3-smiley.jpg";
 	this.bounce = new Bounce(image); 
-	this.grid = new Ribbon("images/black.png", new Box(0,0,0));
+	image = new Image();
+	image.src = "images/grid_ribbon.png";
+	this.grid = new Ribbon(new Box(0, 0, 0, image.width, image.height), image);
 	
 	this.playBall = function() {
-		that.director.addActor(that.bounce);
-		that.director.addActor(that.grid);
+		that.director.addSprite(that.bounce);
+		that.director.addSprite(that.grid);
 		that.director.startRendering();
 	};
 }

@@ -9,7 +9,7 @@ function Director()
     /** An array of game objects 
         @type Array
     */
-    this.boxes = new Array();
+    this.sprites = new Array();
     /** The time that the last frame was rendered  
         @type Date
     */
@@ -26,8 +26,7 @@ function Director()
     /** A reference to the in-memory canvas used as a back buffer 
         @type HTMLCanvasElement
     */
-    this.camera = new Camera(this.boxes, 0, 0, 0, this.canvas.width, this.canvas.height, 10, 0);
-    this.addBox(this.camera);
+    this.camera = new Camera(this.sprites, new Box(0, 0, 0, this.canvas.width, this.canvas.height, 10, 0));
     
     // Create the backBuffer
     this.backBuffer = document.createElement('canvas');
@@ -53,14 +52,15 @@ function Director()
     {
         // calculate the time since the last frame
         var dt = (new Date().getTime() - that.lastUpdateTime)/1000;
-        // first update all the game boxes
-        for (x in that.boxes)
+        // first update all the game sprites
+        for (x in that.sprites)
         {
-            if (that.boxes[x].update)
+            if (that.sprites[x].update)
             {
-                that.boxes[x].update(dt);
+                that.sprites[x].update(dt);
             }
         }
+        that.camera.update(dt);
         that.lastUpdateTime = new Date().getTime();
 
         // clear the drawing contexts
@@ -69,33 +69,62 @@ function Director()
         
         // then draw the game objects
         that.camera.draw(that.backBufferContext2D);
+//        for (var i = 0; i < that.sprites.length; i++) {
+//			var sprite = that.sprites[i];
+//			if(!(sprite instanceof Sprite)) throw new TypeError('Instance of Sprite was expected.');
+//			if((sprite instanceof Ribbon) || sprite.collidedWith(that.camera)) {
+//				sprite.draw(that.backBufferContext2D, that.camera);
+//			}
+//		}
+        
 
         // copy the back buffer to the displayed canvas
         that.context2D.drawImage(that.backBuffer, 0, 0);
     };
 
-    /**
-        Adds a new box to the boxes collection
-        @param box The object to add
-    */
-    this.addBox = function(box)
-    {
-    	if(box instanceof Box)
-		{
-	        that.boxes.push(box);
-	        that.boxes.sort(function(a,b){return a.box.z - b.box.z;});
-		}
-    	else throw new TypeError('Instance of Box was expected');
-    };
-
-    /**
-        Removes an box from the boxes collection
-        @param box The object to remove
-    */
-    this.removeBox = function(box)
-    {
-    	if(box instanceof Box)
-	        that.boxes.removeObject(box);
-    	else throw new TypeError('Instance of Box was expected');
-    };
+//    /**
+//        Adds a new sprite to the sprites collection
+//        @param sprite The object to add
+//    */
+//    this.addSprite = function(sprite)
+//    {
+//    	if(sprite instanceof Sprite)
+//		{
+//	        that.sprites.push(sprite);
+//	        that.sprites.sort(function(a,b){return a.box.z - b.box.z;});
+//		}
+//    	else throw new TypeError('Instance of Sprite was expected');
+//    };
+//
+//    /**
+//        Removes an sprite from the sprites collection
+//        @param sprite The object to remove
+//    */
+//    this.removeSprite = function(sprite)
+//    {
+//    	if(sprite instanceof Sprite)
+//	        that.sprites.removeObject(sprite);
+//    	else throw new TypeError('Instance of Sprite was expected');
+//    };
 }
+
+Director.prototype.addSprite = function(sprite)
+    {
+    	if(sprite instanceof Sprite)
+		{
+	        this.sprites.push(sprite);
+	        this.sprites.sort(function(a,b){return a.box.z - b.box.z;});
+		}
+    	else throw new TypeError('Instance of Sprite was expected');
+};
+
+/**
+    Removes an sprite from the sprites collection
+    @param sprite The object to remove
+*/
+Director.prototype.removeSprite = function(sprite)
+{
+	if(sprite instanceof Sprite)
+        this.sprites.removeObject(sprite);
+	else throw new TypeError('Instance of sprite was expected');
+};
