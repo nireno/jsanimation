@@ -3,9 +3,10 @@
     @author <a href="mailto:matthewcasperson@gmail.com">Matthew Casperson</a>
     @class
 */
-function Director()
+function Director(inputManager)
 {
 	var that = this;
+	this.inputManager = inputManager;
     /** An array of game objects 
         @type Array
     */
@@ -26,8 +27,8 @@ function Director()
     /** A reference to the in-memory canvas used as a back buffer 
         @type HTMLCanvasElement
     */
-    this.camera = new Camera(this.sprites, new Box(0, 0, 0, this.canvas.width, this.canvas.height, 10, 0));
-    
+    this.camera = new TestCamera(this.sprites, new Box(0, 0, 0, this.canvas.width, this.canvas.height, 10, 0));
+    this.inputManager.addListener(this.camera);
     // Create the backBuffer
     this.backBuffer = document.createElement('canvas');
     this.backBuffer.width = this.canvas.width;
@@ -128,3 +129,4 @@ Director.prototype.removeSprite = function(sprite)
         this.sprites.removeObject(sprite);
 	else throw new TypeError('Instance of sprite was expected');
 };
+

@@ -17,7 +17,8 @@ function ApplicationManager(director)
 	image.src = "images/grid_ribbon.png";
 	this.grid = new Ribbon(new Box(0, 0, 0, image.width, image.height), image);
 	
-	this.playBall = function() {
+	
+    this.playBall = function() {
 		that.director.addSprite(that.bounce);
 		that.director.addSprite(that.grid);
 		that.director.startRendering();
