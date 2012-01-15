@@ -1,1 +1,0 @@
-/* throw a TypeError when doing variable type checking */
