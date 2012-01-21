@@ -12,7 +12,7 @@ Camera.prototype.draw = function(context) {
 	for(var i = 0; i < this.sprites.length; i++) {
 		var sprite = this.sprites[i];
 		if(!(sprite instanceof Sprite)) throw new TypeError('Instance of Box was expected.');
-		if((sprite instanceof Ribbon) || this.box.collidedWith(sprite)) {
+		if(this.box.isCollidingWith(sprite)) {
 			sprite.draw(context, this);
 		}
 	}

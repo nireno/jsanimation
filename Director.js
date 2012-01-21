@@ -5,6 +5,8 @@
 */
 function Director(inputManager)
 {
+    var FPS = 30;
+    var SECONDS_BETWEEN_FRAMES = 1 / FPS;
 	var that = this;
 	this.inputManager = inputManager;
     /** An array of game objects 
@@ -27,8 +29,7 @@ function Director(inputManager)
     /** A reference to the in-memory canvas used as a back buffer 
         @type HTMLCanvasElement
     */
-    this.camera = new TestCamera(this.sprites, new Box(0, 0, 0, this.canvas.width, this.canvas.height, 10, 0));
-    this.inputManager.addListener(this.camera);
+    this.camera = new Camera(this.sprites, new Box(0, 0, 0, this.canvas.width, this.canvas.height, 10, 0));
     // Create the backBuffer
     this.backBuffer = document.createElement('canvas');
     this.backBuffer.width = this.canvas.width;
@@ -70,43 +71,11 @@ function Director(inputManager)
         
         // then draw the game objects
         that.camera.draw(that.backBufferContext2D);
-//        for (var i = 0; i < that.sprites.length; i++) {
-//			var sprite = that.sprites[i];
-//			if(!(sprite instanceof Sprite)) throw new TypeError('Instance of Sprite was expected.');
-//			if((sprite instanceof Ribbon) || sprite.collidedWith(that.camera)) {
-//				sprite.draw(that.backBufferContext2D, that.camera);
-//			}
-//		}
-        
 
         // copy the back buffer to the displayed canvas
         that.context2D.drawImage(that.backBuffer, 0, 0);
     };
 
-//    /**
-//        Adds a new sprite to the sprites collection
-//        @param sprite The object to add
-//    */
-//    this.addSprite = function(sprite)
-//    {
-//    	if(sprite instanceof Sprite)
-//		{
-//	        that.sprites.push(sprite);
-//	        that.sprites.sort(function(a,b){return a.box.z - b.box.z;});
-//		}
-//    	else throw new TypeError('Instance of Sprite was expected');
-//    };
-//
-//    /**
-//        Removes an sprite from the sprites collection
-//        @param sprite The object to remove
-//    */
-//    this.removeSprite = function(sprite)
-//    {
-//    	if(sprite instanceof Sprite)
-//	        that.sprites.removeObject(sprite);
-//    	else throw new TypeError('Instance of Sprite was expected');
-//    };
 }
 
 Director.prototype.addSprite = function(sprite)
@@ -125,8 +94,7 @@ Director.prototype.addSprite = function(sprite)
 */
 Director.prototype.removeSprite = function(sprite)
 {
-	if(sprite instanceof Sprite)
-        this.sprites.removeObject(sprite);
-	else throw new TypeError('Instance of sprite was expected');
+	var index = this.sprites.indexOf(sprite);
+	if(index != -1) this.sprites.splice(index, 1);
 };
 

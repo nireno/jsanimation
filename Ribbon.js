@@ -1,16 +1,18 @@
 function Ribbon(box, image) {
 	that = this;
+	
 	Sprite.call(this, box, image);
+	
+	
 }
 Ribbon.prototype = new Sprite();
 Ribbon.prototype.constructor = Ribbon;
 
 Ribbon.prototype.draw = function(context, camera) {
 	/** x position of the right border of the camera */
-	
 	var image = that.image;
 	
-	var camLeftEdge = Math.floor(camera.box.x % image.width);
+	var camLeftEdge = Math.floor(camera.box.x % image.width); //Using integers in the calculation prevents graphics tearing problems in firefox when the ribbon is scrolling, hence the use of Math.floor.
 	if(camLeftEdge < 0) camLeftEdge += image.width; // Adjust for camera movement from right to left into a negative region
 	var camRightEdge = camLeftEdge + camera.box.width;
 	
@@ -32,15 +34,4 @@ Ribbon.prototype.draw = function(context, camera) {
 	sourceWidth = camRightEdge - image.width;
 	sourceHeight = image.height;
 	context.drawImage(image, sourceX, sourceY, sourceWidth, sourceHeight, destX, destY, sourceWidth, sourceHeight);
-//		void drawImage(
-//				  in nsIDOMElement image,
-//				  in float sx, - source x start
-//				  in float sy, - source y start
-//				  in float sw, - source width
-//				  in float sh, - source height
-//				  in float dx, - destination x start
-//				  in float dy, - destination y start
-//				  in float dw,
-//				  in float dh
-//				);
 };

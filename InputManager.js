@@ -1,3 +1,9 @@
+/* Define an InputManager that publishes when a key is pressed or released. 
+ * to all listeners.
+ * Usually when a key is held down it repeatedly sends a character to the OS. This object
+ * ignores these repeats, only publishing a keypress once, after which it will wait for the key
+ * to be released.
+ */
 function InputManager() {
 	that = this;
 	this.listeners = [];
@@ -11,22 +17,25 @@ function InputManager() {
 InputManager.prototype.addListener = function(listener) {
 	if (listener.keyPressed && listener.keyReleased) {
 		this.listeners.push(listener);
-	}
-	else throw new ReferenceError("Missing 'keyPressed' or 'keyReleased' method.");
+	} else
+		throw new ReferenceError(
+				"Missing 'keyPressed' or 'keyReleased' method.");
 };
 
 InputManager.prototype.removeListener = function(listener) {
 	var index = this.listeners.indexOf(listener);
-	if (index !== -1) this.listeners.splice(index, 1);
+	if (index !== -1)
+		this.listeners.splice(index, 1);
 };
 
 InputManager.prototype.handleKeyDown = function(event) {
-	// Alert all relevant listeners of the keypress only if that key was not already down.
+	// Alert all relevant listeners of the keypress only if that key was not
+	// already down.
 	var keycode = event.keyCode;
-	if(!this.keysDown[keycode]) {
+	if (!this.keysDown[keycode]) {
 		this.keysDown[keycode] = true;
-		
-		for(var i = 0; i < this.listeners.length; i++) {
+
+		for ( var i = 0; i < this.listeners.length; i++) {
 			var listener = this.listeners[i];
 			listener.keyPressed(keycode);
 		}
@@ -34,11 +43,12 @@ InputManager.prototype.handleKeyDown = function(event) {
 };
 
 InputManager.prototype.handleKeyUp = function(event) {
-	// Alert all relevant listeners of the keypress only if that key was not already down.
+	// Alert all relevant listeners of the keypress only if that key was not
+	// already down.
 	var keycode = event.keyCode;
 	this.keysDown[keycode] = false;
-	
-	for(var i = 0; i < this.listeners.length; i++){
+
+	for ( var i = 0; i < this.listeners.length; i++) {
 		listener = this.listeners[i];
 		listener.keyReleased(keycode);
 	}

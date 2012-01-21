@@ -25,12 +25,30 @@ Box.prototype.getRightEdge = function() {
 Box.prototype.getBottomEdge = function() {
 	return this.y + this.height;
 };
+
 /**
- * 
+ * @deprecated
  * @param box
  * @returns {Boolean}
  */
 Box.prototype.collidedWith = function(box) {
+	var left1 = this.x;
+	var right1 = left1 + this.width;
+	var top1 = this.y;
+	var bottom1 = top1 + this.height;
+	var left2 = box.x;
+	var right2 = left2 + box.width;
+	var top2 = box.y;
+	var bottom2 = top2 + box.height;
+	
+	if(bottom1 < top2) return false;
+	if(top1 > bottom2) return false;
+	if(right1 < left2) return false;
+	if(left1 > right2) return false;
+	return true;
+};
+
+Box.prototype.isCollidingWith = function(box) {
 	var left1 = this.x;
 	var right1 = left1 + this.width;
 	var top1 = this.y;
